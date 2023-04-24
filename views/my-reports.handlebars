@@ -1,0 +1,69 @@
+{{!
+This page will respond with a valid HTML document. The title of the document should be "Venues Found". You should have
+the title set as the <title> element of the HTML document and as an h1 in your document. In an h2 element, you will
+    print the supplied searchVenueTerm.
+
+    Your page should reference a CSS file, /public/css/main-styles.css; this file should have at least 5 rulesets that
+    apply to this page; these 5 rules can also apply to elements on /, or be unique to this page.
+
+    You should have a main element, and inside of the main element have a ol tag that has a list of up to 10 venues (the
+    first 10 that appear in the search result array) matching the searchVenueTerm found in the request body in the
+    following format (after searching Madison).
+
+    
+    <ol>
+        <li>
+            <a href="/venuedetails/KovZpZA7AAEA">Madison Square Garden</a>
+        </li>
+        <li>
+            <a href="/venuedetails/KovZpZAa1anA">Madison Theatre</a>
+        </li>
+        <li>
+            <a href="/venuedetails/KovZpZAE7EAA">Madison Live!</a>
+        </li>
+        <li>
+            <a href="/venuedetails/KovZ917APhp">Madison Center for the Arts</a>
+        </li>
+        <li>
+            <a href="/venuedetails/KovZpZA7kvlA">The Theatre at MSG</a>
+        </li>
+        <li>
+            <a href="/venuedetails/KovZpabkQe">Madison Theatre</a>
+        </li>
+        <li>
+            <a href="/venuedetails/KovZ917AtKH">Madison County Fairgrounds</a>
+        </li>
+        <li>
+            <a href="/venuedetails/KovZpZAE6lvA">Madison Street Theatre</a>
+        </li>
+        <li>
+            <a href="/venuedetails/KovZpZAIIIkA">Madison Square Park</a>
+        </li>
+        <li>
+            <a href="/venuedetails/Z1lMVSyiJynZad9jvPa7vo">madison square garden</a>
+        </li>
+    </ol>
+    You must also provide an a tag that links back to your / route with the text Make another search.
+    }}
+
+    <h2>{{title}}</h2>
+
+    <main>
+        
+        <p>{{none}}</p>
+        {{#each reports}}
+        <div class="report">
+            <p>
+                <label class="my-report-label">Status:</label> {{status}} <br>
+                <label class="my-report-label">Report ID:</label> {{_id}} <br>
+                <label class="my-report-label">Offense Category:</label> {{category}} <br>
+                <label class="my-report-label">Date:</label> {{date}} <br>
+                <label class="my-report-label">Time:</label> {{time}} <br>
+                <label class="my-report-label">Class and Section:</label> {{classSection}} <br>
+                <label class="my-report-label">Students Involved:</label> {{involved}} <br>
+                <label class="my-report-label">Description of Event:</label> {{desc}} 
+            </p>
+        </div>
+        {{/each}}
+
+    </main>

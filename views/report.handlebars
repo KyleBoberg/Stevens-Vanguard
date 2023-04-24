@@ -1,0 +1,49 @@
+
+    <main>
+        <h2>{{title}}</h2>
+        <p class="center">Report any Honor Code violations you have witnessed here.  All fields marked with * are required for a report submission.</p>
+
+
+        <div id="report-form-div">
+        <form id="report-form" method="post">
+            <label class="form-label" for="anonymous">Anonymous</label>
+            <input id="anonymous" name="anonymous" type="checkbox">
+            <br>
+            <p id="anon-desc">Check the box to send anonymous report.</p>
+            <br>
+
+            <label class="form-label" for="category">Category</label>
+            <select name="category" id="category">
+                <option value="homework">Homework Violation</option>
+                <option value="test/quiz">Test or Quiz Violation</option>
+                <option value="classwork">Classwork Violation</option>
+                <option value="other">Other Violation</option>
+            </select>
+            <br>
+
+            <label class="form-label" for="date">Date of Violation</label>
+            <input type="date" id="date" name="date">
+            <br>
+
+            <label class="form-label" for="time">Time of Violation</label>
+            <input type="time" id="time" name="time">
+            <br>
+
+            <label class="form-label" for="class">Class and Section</label>
+            <input type="text" id="class" name="class">
+            <br>
+
+            <label class="form-label" for="invloved">Students or Groups Involved</label>
+            <input type="text" id="involved" name="involved">
+            <br>
+
+
+            <div id="textbox">
+            <label  class="form-label-textarea" for="text_input">Description of Incident</label>
+            <textarea id="text_input" name="text_input" placeholder="Input text here...">{{default}}</textarea> 
+            </div>
+            <br>
+            <input value="Submit Report" type="submit" class="submit">
+        </form>
+        </div>
+    </main>

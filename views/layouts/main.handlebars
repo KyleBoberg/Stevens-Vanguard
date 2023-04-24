@@ -1,0 +1,38 @@
+{{! This will be your default layout for all handlebars file rendered. This will be inherited by all other templates. }}
+{{! Refer lecture code to learn more on how this works: https://github.com/stevens-cs546-cs554/CS-546/tree/master/lecture_08/code/HTML_Templating }}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/public/css/main-styles.css">
+</head>
+<body>
+    <div id="page-container">
+    <a href="/home">
+    <header>
+        <img class="logo" src="https://www.stevens.edu/favicon/mstile-150x150.png">
+        <h1 id="sv">Stevens Vanguard</h1>
+    </header>
+    </a>
+    <div id="nav">
+        <nav>
+            <a href="./report" class="navBar">Report a Violation</a>
+            <a href="./resources" class="navBar">Honor Code Resources</a>
+            <a href="./my-reports" class="navBar">My Reports</a>
+        </nav>
+     </div>
+     <div id="content">
+    {{{body}}}
+    </div>
+    <footer>
+        <p id="footer-text">
+            You Can Contact Us At honor@stevens.edu<br>
+            © Stevens Honor Board April 2023
+            <a href="/logout">Logout</a>
+        </p>
+    </footer>
+    </div>
+</body>
+</html>

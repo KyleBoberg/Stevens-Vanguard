@@ -1,0 +1,47 @@
+{{!
+
+This page will respond with a valid HTML document. The title of the document should be "Venue Finder". You should have
+the title set as the <title> element of the HTML document and as an h1 in your document.
+
+    Your page should reference a CSS file, /public/css/main-styles.css; this file should have at least 5 rulesets that
+    apply
+    to this page; these 5 rules can also apply to elements across all of your pages, or be unique to this page.
+
+    You should have a main element, and inside of the main element have a p element with a brief (2-3 sentence
+    description) of what your website does.
+
+    Also inside the main element, you will have a form; this form will POST to the /searchvenues route. This form will
+    have an input and a label; the label should properly reference the same id as the input using the for attribute. You
+    should also have an input with a type of submit that submits the form. The input in your form should have a name of
+    searchVenueTerm.
+
+    }}
+
+    <h2>Honor. Integrity. Respect.</h2>
+    <main>
+        <p id="quote">“Honor, integrity, and respect are at the core of Stevens’ mission to inspire, nurture and educate leaders in tomorrow’s 
+            technology-centric environment while contributing to the solution of the most challenging problems of our time. 
+            Since 1908, the Stevens Honor System has upheld these values among students, faculty, and administrators, building a strong 
+            foundation for the prestige and success that has come to define a Stevens education.” <br>
+            -President Nariman Favardin
+        </p>
+        
+        <form method="post" id="homepage-form">
+            <h3>Tell us what you saw.</h3>
+            <textarea name="text_input_home" id="text_input_home" placeholder="Input text here..."></textarea>
+            <label for="text_input_home"></label> 
+            <br>
+            <input value="Continue" type="submit" class="submit">
+        </form>
+
+        <div id="testimonials">
+            <h3>Why Report?</h3>
+            <ul>
+                <li>“My friend used ChatGPT to help with a homework, so I reported him and they took his scholarship. 
+                    Hope the 10 minutes saved was worth $70,000. Fuck you Tom Rivington.” -Anonymous Student
+                </li>
+                <li>“It not only hurts your own education to cheat, it messes up your peers who are working hard for their grades.” -Anonymous Professor
+                </li>
+            </ul>
+        </div>
+    </main>
