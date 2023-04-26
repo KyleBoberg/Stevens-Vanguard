@@ -4,14 +4,36 @@ You will render this page with the HTML paragraph defined in the lab assignment.
 }}
 <main>
     <h2>{{title}}</h2>
-    
-    <p>The Stevens Honor System should create an atmosphere that encourages the pursuit of intellectual and ethical enlightenment, develops a 
-        sense of community, cultivates respect for the rights of individuals in the community, and develops graduates with character.<br>   
-        Honor is an indispensable value of the Institute. The Honor System is in place to ensure this value is upheld. The success of the Honor 
-        System depends on the support of individual students, the student body as a whole, and the faculty. The roles and function of the 
+
+    <p>The Stevens Honor System should create an atmosphere that encourages the pursuit of intellectual and ethical
+        enlightenment, develops a
+        sense of community, cultivates respect for the rights of individuals in the community, and develops graduates
+        with character.<br>
+        Honor is an indispensable value of the Institute. The Honor System is in place to ensure this value is upheld.
+        The success of the Honor
+        System depends on the support of individual students, the student body as a whole, and the faculty. The roles
+        and function of the
         Honor Board, the governing body of the Honor System, are described in the following Constitution and By-laws.
     </p>
 
-    <p>Input the resources here.</p>
+    <label for="documents">Documents</label>
+    <select name="documents" id="documents" onchange="location = this.value;">
+        <option value="https://web.stevens.edu/honor/documents/constitution.pdf">Constitution</option>
+        <option value="https://web.stevens.edu/honor/documents/bylaws.pdf">Bylaws</option>
+        <option value="https://web.stevens.edu/honor/documents/investigation-procedures-manual.pdf">Investigation Procedure Manual</option>
+        <option value="https://web.stevens.edu/honor/documents/hearing-procedures-manual.pdf">Hearings Procedure Manual</option>
+    </select>
+    <label for="documents">Documents</label>
+    <select name="documents" id="documents" onchange="location = this.value;">
+        <option value="https://web.stevens.edu/honor/documents/constitution.pdf">Constitution</option>
+        <option value="https://web.stevens.edu/honor/documents/bylaws.pdf">Bylaws</option>
+        <option value="https://web.stevens.edu/honor/documents/investigation-procedures-manual.pdf">Investigation Procedure Manual</option>
+        <option value="https://web.stevens.edu/honor/documents/hearing-procedures-manual.pdf">Hearings Procedure Manual</option>
+    </select>
+    <label for="ethic">Ethics Course</label>
+    <select name="ethic" id="ethic" onchange="location = this.value;">
+        <option value="https://web.stevens.edu/honor/documents/ethics-course-manual.pdf">Ethics Course Manual</option>
+        <option value="https://web.stevens.edu/honor/documents/ethics-course-manual-old.pdf">Old Ethics Course Manual</option>
+        
+    </select>
 </main>
-
