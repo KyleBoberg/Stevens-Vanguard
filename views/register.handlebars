@@ -1,0 +1,34 @@
+{{!--
+
+registration handelbars
+
+--}}
+<h1>
+    {{title}}
+</h1>
+<p>{{error}}</p>
+<main>
+    <form action="/register" method="POST" id="registration-form">
+        <label for="firstNameInput">First Name</label>
+        <input id="firstNameInput" type="text" name="firstNameInput" placeholder="Patrick"/>
+        <label for="lastNameInput">Last Name</label>
+        <input id="lastNameInput" type="text" name="lastNameInput" placeholder="Hill"/>
+        <label for="emailAddressInput">Email Address</label>
+        <input id="emailAddressInput" type="email" name="emailAddressInput" placeholder="example@example.com"/>
+        <label for="passwordInput">Password</label>
+        <input id="passwordInput" type="password" name="passwordInput" placeholder="Mypassword123!"/>
+        <label for="confirmPasswordInput">Confirm Password</label>
+        <input id="confirmPasswordInput" type="password" name="confirmPasswordInput" placeholder="Mypassword123!"/>
+        {{!-- Drop down --}}
+        <label for="roleInput">Select a role</label>
+        <select name="roleInput" id="roleInput">
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+        </select>
+        {{!-- Submit form --}}
+        <label for="button">Click here to Register</label>
+        <input id='button' type="submit"/>
+    </form>
+    <a href="/login">Already have an account? Click here to log-in</a> <br>
+    <div id="error-reg" class="error" hidden>I'm an error. I will change through Client-Side JS</div>
+</main>

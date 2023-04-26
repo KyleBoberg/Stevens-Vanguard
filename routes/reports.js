@@ -1,7 +1,8 @@
 import {Router} from 'express';
 const router = Router();
 import {reportData} from "../data/index.js"
-
+import validation from "../helpers.js"
+import userData from '../data/users.js'
 const rootMiddleware = async (req, res, next) => {
   if (req.session.loggedIn) {
     res.redirect("/home")
@@ -96,14 +97,63 @@ router
   })
   .post(async (req, res) => {
     //code here for POST
-
-    req.session.user = req.body.emailAddressInput;
-
-    req.session.loggedIn = true;
-    res.redirect("/home")
+    let {emailAddressInput, passwordInput} = req.body;
+    try{
+      emailAddressInput = validation.checkEmail(emailAddressInput,"Email Address");
+      passwordInput = validation.checkPassword(passwordInput, "Password");
+    } catch (e){
+      return res.status(400).render('login', {title: "Login Form", error: e})
+    }
+    try {
+      let user = await userData.checkUser(emailAddressInput,passwordInput);
+      if (user) {
+        req.session.user = user;
+        req.session.loggedIn = true;
+        res.redirect('/home')
+      }
+    }catch (e){
+      return res.status(400).render('login', {title: "Login Form", error: e})
+    }
+    
+    
     
   });
-
+router
+  .route('/register')
+  .get(async (req, res) => {
+    //code here for GET
+    return res.render('register', {title: "Register Form"})
+  })
+  .post(async (req, res) => {
+    //code here for POST
+    let {firstNameInput,lastNameInput,emailAddressInput,passwordInput,confirmPasswordInput,roleInput} = req.body;
+    let missing = []
+    //if any are missing you will re-render the form with a 400 status code explaining to the user which fields are missing. 
+    if (!firstNameInput) missing.push("First Name")
+    if (!lastNameInput) missing.push("Last Name")
+    if (!emailAddressInput) missing.push("Email Address")
+    if (!passwordInput) missing.push("Password")
+    if (!confirmPasswordInput) missing.push("Confirm Password")
+    if (!roleInput) missing.push("Role")
+    if (missing.length >0) return res.status(400).render("register",{title: "Register Form", error: `Missing: ${missing.join(', ')}`})
+    try{
+      firstNameInput = validation.checkName(firstNameInput,"First Name");
+      lastNameInput = validation.checkName(lastNameInput,"Last Name");
+      emailAddressInput = validation.checkEmail(emailAddressInput, "Email Address");
+      passwordInput = validation.checkPassword(passwordInput,"Password")
+      if (passwordInput !== confirmPasswordInput) throw "password and confirm Password must match"
+      roleInput = validation.checkRole(roleInput, "Role")
+    } catch (e){
+      return res.status(400).render("register",{title: "Register Form", error: e})
+    }
+    try{
+      let insertedUser =  (await userData.createUser(firstNameInput,lastNameInput,emailAddressInput,passwordInput,roleInput)).insertedUser;
+      if (insertedUser === true) return res.redirect('/login')
+    } catch (e){
+      return res.status(400).render("register",{title: "Register Form", error: e})
+    }
+    return res.status(500).render('error', {title: 'Error',message: "Internal Server Error"})
+  });
 router.route('/logout').get(async (req, res) => {
     //code here for GET
     req.session.destroy();
