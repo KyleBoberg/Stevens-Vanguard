@@ -154,12 +154,12 @@ input {
 }
 
 footer{
-    position: fixed;
     bottom: 0;
     width: 99%;
     background-color: rgb(222, 222, 222);
     text-align: center;
     padding: 2px;
+    display: block;
 }
 
 
@@ -182,13 +182,12 @@ footer{
 #content{
     padding-bottom: 2.5rem;
     margin-top: 80px;
-
+    min-height: 55vh;
 }
 
 #page-container {
     position: relative;
-    min-height: 94vh;
-    margin-bottom: 100px;
+    outline: black auto;
 }
 
 .report{
