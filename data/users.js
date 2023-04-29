@@ -54,7 +54,13 @@ const checkUser = async (emailAddress, password) => {
   }
   return returnUser
 };
+const getAll = async () => {
+  const userCollection = await users();
+  const allUsers = await userCollection.find().toArray();
+  return allUsers;
+}
 export default{
+  getAll,
   createUser,
   checkUser
 }

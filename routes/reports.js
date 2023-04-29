@@ -5,9 +5,9 @@ import validation from "../helpers.js"
 import userData from '../data/users.js'
 const rootMiddleware = async (req, res, next) => {
   if (req.session.loggedIn) {
-    res.redirect("/home")
+    return res.redirect("/home")
   }else{
-    res.redirect("/login");
+    return res.redirect("/login");
   }
 }
 
@@ -19,18 +19,18 @@ router.route('/').get(rootMiddleware, async (req, res) => {
 router.route('/home').get(async (req, res) => {
   //code here for GET
   try{
-    res.status(200).render("homepage",{title: "home"});
+    return res.status(200).render("homepage",{title: "home"});
   }catch(e){
-    res.json(e).status(400)
+    return res.json(e).status(400)
   }
 }).post(async (req, res) => {
   if(req.body.text_input_home){
     req.session.homepageReport = req.body.text_input_home;
   }
   if(req.session.user){
-    res.redirect("/report")
+   return res.redirect("/report")
   }else{
-    res.redirect("/login")
+    return res.redirect("/login")
   }
 });
 
@@ -39,12 +39,12 @@ router.route('/report')
     //code here for GET
     try{
       if(!req.session.homepageReport){
-        res.status(200).render("report",{title: "Report A Violation"});
+        return res.status(200).render("report",{title: "Report A Violation"});
       }else{
-        res.status(200).render("report",{title: "Report A Violation", default: req.session.homepageReport});
+        return res.status(200).render("report",{title: "Report A Violation", default: req.session.homepageReport});
       }
     }catch(e){
-      res.json(e).status(400)
+      return res.json(e).status(400)
     }
   })
   .post(async (req, res)=>{
@@ -56,8 +56,8 @@ router.route('/report')
     }
   
     try{
-      await reportData.create(anonymous, req.session.user, newReport.category, newReport.date, newReport.time, newReport.class, newReport.involved, newReport.text_input)
-      res.redirect("/my-reports")
+      await reportData.create(req, anonymous, req.session.user, newReport.category, newReport.date, newReport.time, newReport.class, newReport.involved, newReport.text_input)
+      return res.redirect("/my-reports")
     }catch(e){
       res.status(400).json(e)
     }
@@ -65,27 +65,46 @@ router.route('/report')
   }
 
 );
-
-router.route('/my-reports').get(async (req, res) => {
-  //code here for GET
-  let reports = await reportData.getAll(req.session.user)
+router.route('/admin').get(async (req, res) =>{
+  if (!req.session.user || req.session.user.role !== "admin"){
+    return res.redirect("/login")
+  }
+  let reports = await reportData.getAllReports()
+  let anonyreports = await reportData.getAllAnony()
+  reports = reports.concat(anonyreports)
   try{
     if(reports.length != 0){
-      res.status(200).render("my-reports",{title: "My Reports", reports: reports});
+      return res.status(200).render("my-reports",{title: "All Reports", reports: reports});
     }else{
-      res.status(200).render("my-reports",{title: "My Reports", none: "No reports yet"});
+      return res.status(200).render("my-reports",{title: "All Reports", none: "No reports yet"});
     }
   }catch(e){
-    res.json(e).status(400)
+    return res.json(e).status(400)
+  }
+})
+router.route('/my-reports').get(async (req, res) => {
+  //code here for GET
+  if (!req.session.user) {
+    return res.redirect("/login")
+  } 
+  let reports = await reportData.get(req.session.user)
+  try{
+    if(reports.length != 0){
+      return res.status(200).render("my-reports",{title: "My Reports", reports: reports});
+    }else{
+      return res.status(200).render("my-reports",{title: "My Reports", none: "No reports yet"});
+    }
+  }catch(e){
+    return res.json(e).status(400)
   }
 });
 
 router.route('/resources').get(async (req, res) => {
   //code here for GET
   try{
-    res.status(200).render("resources",{title: "Honor Code Resouces"});
+    return res.status(200).render("resources",{title: "Honor Code Resouces"});
   }catch(e){
-    res.json(e).status(400)
+    return res.json(e).status(400)
   }
 });
 
@@ -109,7 +128,8 @@ router
       if (user) {
         req.session.user = user;
         req.session.loggedIn = true;
-        res.redirect('/home')
+        if (user.role === 'admin') return res.redirect('/admin')
+        if (user.role === 'user') return res.redirect('/my-reports')
       }
     }catch (e){
       return res.status(400).render('login', {title: "Login Form", error: e})

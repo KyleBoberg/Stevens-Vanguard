@@ -1,13 +1,14 @@
-import {reports} from "../config/mongoCollections.js"
+import {users,reports} from "../config/mongoCollections.js"
 import {ObjectId} from "mongodb";
+import userData from "./users.js";
 
-
-const create = async (anonymous, user, category, date, time, classSection, involved, desc) => {
-    if(!category || !user || !date || !time || !classSection || !involved || !desc){throw "invalid params yo"}
+const create = async (req, anonymous, user, category, date, time, classSection, involved, desc) => {
+    if(!category || !date || !time || !classSection || !involved || !desc){throw "invalid params yo"}
     //validate date and time somehow???
-    user = user.trim();
+    
 
     let newReport = {
+        _id: new ObjectId(),
         category: category,
         user: user,
         date: date,
@@ -17,56 +18,72 @@ const create = async (anonymous, user, category, date, time, classSection, invol
         desc: desc,
         status: "Pending"
     }
-
     
 
     if(anonymous){
-        return true;
+        const reportCollection = await reports()
+        const newInsertInfo = await reportCollection.insertOne(newReport);
+        if (!newInsertInfo.insertedId) throw "Insert Failed"
+        return true
     }
-    const reportCollection = await reports();
-    let createInfo = await reportCollection.insertOne(newReport);
+    const userCollection = await users();
+    const target = await userCollection.findOne({emailAddress: user.emailAddress}) 
+    if (!target) {
+        throw "user not found";
+    }
 
+    target.report.push(newReport);
 
-    if(!createInfo.acknowledged || !createInfo.insertedId){throw "could not add report"}
+    const updateInfo = await userCollection.updateOne(
+        { emailAddress: user.emailAddress },
+        { $set: { report: target.report } }
+    );
 
+    if (!updateInfo.acknowledged || updateInfo.modifiedCount === 0) {
+        throw "could not add report";
+    }
+
+    req.session.user = target;
 
     return true;
 }
-
-const get = async (id) => {
-    if(!id){throw "must input an id"}
-    if(typeof(id)!="string"){throw "id must be a string"}
-    id = id.trim();
-    if(id.length == 0){throw "id string cannot be empty"}
-    if(!ObjectId.isValid(id)){throw "invalid id"}
-    
-    const reportCollection = await reports();
-    const output = await reportCollection.findOne({_id: new ObjectId(id)});
-    
-    if (!output) {throw "no report with that id"}
-    output._id = output._id.toString();
-    return output;
-}
-
-const getAll = async (user) => {
-    let reportCollection = await reports();
-    let allReports = await reportCollection.find({user: user}).toArray();
+const get = async (user) => {
+    const userCollection = await users();
+    const target = await userCollection.findOne({emailAddress: user.emailAddress}) 
+    if (!target) {
+        throw "user not found";
+    }
+    let allReports = target.report;
 
     //if (!allReports || allReports.length == 0){throw {errorCode: 400, errorMessage: "Error: user has no reports"}}
     if (!allReports || allReports.length == 0){allReports = []}
     
-    for(let i = 0; i < allReports.length; i++){
-        allReports[i]._id = allReports[i]._id.toString();
-    }
-
+   
     return allReports;
 }
-
+const getAllReports = async () => {
+    const allUsers = await userData.getAll(); // get all users
+    const allReports = [];
+  
+    for (const user of allUsers) {
+      const reports = await get(user); // get all reports for user
+      allReports.push(...reports); // add reports to array
+    }
+  
+    return allReports;
+  };
+const getAllAnony = async () =>{
+    
+        const reportCollection = await reports();
+        const allreports = await reportCollection.find().toArray();
+        return allreports
+}
 
 
 
 export{
     create,
     get,
-    getAll
+    getAllReports,
+    getAllAnony
 }

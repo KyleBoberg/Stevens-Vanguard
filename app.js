@@ -23,6 +23,12 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
     next();
 };
 
+app.use('/public', staticDir);
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(rewriteUnsupportedBrowserMethods);
+app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 
 
@@ -39,24 +45,42 @@ app.use(
   })
 );
 
-
-app.use('/report', (req, res, next) => {
-    if (!req.session.loggedIn) {
-        res.redirect("/login")
-    }
-    next();
-});
-
-app.use('/my-reports', (req, res, next) => {
-  if (!req.session.loggedIn) {
-      res.redirect("/login")
+app.use('/login', (req,res,next) => {
+  if (req.session.user){
+      switch (req.session.user.role){
+          case "admin":
+              return res.redirect('/admin');
+              break;
+          case "user":
+              return res.redirect('/my-reports');
+              break;
+          default:
+              next()
+      }
   }
-  next();
-});
+  else next()
+})
+app.use('/register', (req,res,next) => {
+  if (req.session.user){
+      switch (req.session.user.role){
+          case "admin":
+              return res.redirect('/admin');
+              break;
+          case "user":
+              return res.redirect('/my-reports');
+              break;
+          default:
+              next()
+      }
+  }else{
+      next();
+  }
+})
 
 
 
-app.use('GET /logout', (req, res, next) => {
+
+app.get('/logout', (req, res, next) => {
     if (!req.session.loggedIn) {
         res.redirect("/login")
     }
@@ -69,14 +93,27 @@ app.use((req, res, next) => {
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} Authenticated: ${auth} user: '${req.session.user}'`);
     next();
 });
+app.get('/', (req,res,next) =>{
+  if (!req.session.user){
+      res.redirect('/login');
+  }else {
+      switch (req.session.user.role){
+          case "admin":
+              return res.redirect('/admin');
+              break;
+          case "user":
+              return res.redirect('/my-reports');
+              break;
+          default:
+              return res.redirect('/login');
+          
+      }
+      next();
+  }
+
+})
 
 
-app.use(express.json());
-app.use('/public', staticDir);
-app.use(express.urlencoded({extended: true}));
-app.use(rewriteUnsupportedBrowserMethods);
-app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
-app.set('view engine', 'handlebars');
 configRoutes(app);
 
 
