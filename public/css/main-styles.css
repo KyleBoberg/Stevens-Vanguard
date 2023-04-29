@@ -154,12 +154,13 @@ input {
 }
 
 footer{
-    text-align: center;
-    width: 99.9%;
-    bottom: 1;
-    /* height: 75px;  */
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     background-color: rgb(222, 222, 222);
-    margin: auto;
+    text-align: center;
+    padding: 10px;
 }
 
 
@@ -250,4 +251,17 @@ footer{
     width: 425px;
     padding: 30px;
     background-color: rgb(222, 222, 222);
+}
+
+.quote {
+    width: 60%;
+    margin: 0 auto;
+    display: block;
+}
+
+.resources {
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    padding-bottom: 50px;
 }
