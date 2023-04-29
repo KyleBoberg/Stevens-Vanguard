@@ -154,7 +154,6 @@ input {
 }
 
 footer{
-    /* position: fixed; */
     bottom: 0;
     width: 99%;
     background-color: rgb(222, 222, 222);
@@ -189,7 +188,6 @@ footer{
 #page-container {
     position: relative;
     outline: black auto;
-    /* margin-bottom: 100px; */
 }
 
 .report{
