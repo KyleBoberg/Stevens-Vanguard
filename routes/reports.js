@@ -93,7 +93,7 @@ router
   .route('/login')
   .get(async (req, res) => {
     //code here for GET
-    return res.render("login", {title: "Login", error: ""});
+    return res.render("login", {title: "Sign in with Stevens Email", error: ""});
   })
   .post(async (req, res) => {
     //code here for POST
