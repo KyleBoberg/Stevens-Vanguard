@@ -5,9 +5,10 @@ import configRoutes from './routes/index.js';
 import exphbs from 'express-handlebars';
 import {fileURLToPath} from 'url';
 import {dirname} from 'path';
+import methodOverride from 'method-override';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
+app.use(methodOverride('_method'));
 const staticDir = express.static(__dirname + '/public');
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {

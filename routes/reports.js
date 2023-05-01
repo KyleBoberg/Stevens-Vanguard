@@ -71,9 +71,10 @@
     }
     let reports = await reportData.getAllReports()
     let anonyreports = await reportData.getAllAnony()
-    reports = reports.concat(anonyreports)
+    reports = anonyreports.concat(reports)
     try{
       if(reports.length != 0){
+        
         return res.status(200).render("admin",{title: "All Reports", reports: reports});
       }else{
         return res.status(200).render("admin",{title: "All Reports", none: "No reports yet"});
@@ -81,15 +82,18 @@
     }catch(e){
       return res.json(e).status(400)
     }
+    
   })
   .put(async (req, res) => {
-    const reportId = req.query.report_id;
+    let reportId = req.query.report_id;
     try {
       await reportData.changeStatus(reportId, "Resolved");
-      res.status(200).send("Report status updated");
+      window.location.href = `/admin?resolved_report=${reportId}`;
+      return res.redirect('/admin')
     } catch (e) {
       console.log(e);
-      res.status(500).send("Failed to mark report as resolved");
+      
+      return res.redirect('/admin')
     }
   });
 
@@ -101,6 +105,8 @@
     let reports = await reportData.get(req.session.user)
     try{
       if(reports.length != 0){
+        if (req.session.user.role === 'admin') 
+        return res.status(200).render("my-reports",{title: "My Reports", reports: reports, admin: '<a class="admin" href="/admin">Go to All reports</a>'});
         return res.status(200).render("my-reports",{title: "My Reports", reports: reports});
       }else{
         return res.status(200).render("my-reports",{title: "My Reports", none: "No reports yet"});

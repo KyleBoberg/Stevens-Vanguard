@@ -14,10 +14,10 @@
                 <label class="my-report-label">Class and Section:</label> {{classSection}} <br>
                 <label class="my-report-label">Students Involved:</label> {{involved}} <br>
                 <label class="my-report-label">Description of Event:</label> {{desc}}
-                <form action="/admin" method="PUT">
-          <input type="hidden" name="report_id" value="{{_id}}">
-          <button type="submit">Mark as Resolved</button>
-        </form>
+                <form class="my-report-label" action="/admin?report_id={{_id}}" method="POST">
+  <input type="hidden" name="_method" value="PUT">
+  <button class="my-button" type="submit">Mark as Resolved</button>
+</form>
             </p>
         </div>
         {{/each}}

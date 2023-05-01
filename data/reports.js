@@ -85,16 +85,22 @@ const changeStatus = async (reportId, status) => {
     if (!status) {
       throw "Status must be provided";
     }
-  
+    if (!ObjectId.isValid(reportId)) throw `Error: invalid object ID`;
     const reportCollection = await reports();
     const updateInfo = await reportCollection.updateOne(
-      { _id: ObjectId(reportId) },
-      { $set: { status: status } }
+      { _id: new ObjectId(reportId) },
+      { $set: { status: "Resolved" } }
     );
-  
-    if (updateInfo.modifiedCount === 0) {
-      throw `Could not update report with ID ${reportId}`;
-    }
+    const userCollection = await users();
+    const updateUserInfo = await userCollection.updateOne(
+      { reports: { $elemMatch: { _id: new ObjectId(reportId) } } },
+      { $set: { "reports.$.status": status } }
+    )
+
+  if (updateUserInfo.modifiedCount === 0 && updateInfo.modifiedCount === 0) {
+    throw `Could not update report with ID ${reportId}`;
+  }
+
   
     return true;
   };

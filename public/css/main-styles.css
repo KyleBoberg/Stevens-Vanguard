@@ -293,3 +293,16 @@ footer{
     display: block;
     padding-bottom: 50px;
 }
+.my-button{
+    margin-left: 100px;
+}
+.admin{
+    align-items: center;
+    color: rgb(198, 3, 3);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+.admin a{
+    display: block;
+}
