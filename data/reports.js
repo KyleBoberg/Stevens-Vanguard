@@ -78,12 +78,31 @@ const getAllAnony = async () =>{
         const allreports = await reportCollection.find().toArray();
         return allreports
 }
-
-
+const changeStatus = async (reportId, status) => {
+    if (!reportId) {
+      throw "Report ID must be provided";
+    }
+    if (!status) {
+      throw "Status must be provided";
+    }
+  
+    const reportCollection = await reports();
+    const updateInfo = await reportCollection.updateOne(
+      { _id: ObjectId(reportId) },
+      { $set: { status: status } }
+    );
+  
+    if (updateInfo.modifiedCount === 0) {
+      throw `Could not update report with ID ${reportId}`;
+    }
+  
+    return true;
+  };
 
 export{
     create,
     get,
     getAllReports,
-    getAllAnony
+    getAllAnony,
+    changeStatus
 }

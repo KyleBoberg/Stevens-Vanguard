@@ -1,0 +1,25 @@
+<h2>{{title}}</h2>
+
+    <main>
+        
+        <p>{{none}}</p>
+        {{#each reports}}
+        <div class="report">
+            <p>
+                <label class="my-report-label">Status:</label> {{status}} <br>
+                <label class="my-report-label">Report ID:</label> {{_id}} <br>
+                <label class="my-report-label">Offense Category:</label> {{category}} <br>
+                <label class="my-report-label">Date:</label> {{date}} <br>
+                <label class="my-report-label">Time:</label> {{time}} <br>
+                <label class="my-report-label">Class and Section:</label> {{classSection}} <br>
+                <label class="my-report-label">Students Involved:</label> {{involved}} <br>
+                <label class="my-report-label">Description of Event:</label> {{desc}}
+                <form action="/admin" method="PUT">
+          <input type="hidden" name="report_id" value="{{_id}}">
+          <button type="submit">Mark as Resolved</button>
+        </form>
+            </p>
+        </div>
+        {{/each}}
+
+    </main>
