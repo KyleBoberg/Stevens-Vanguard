@@ -27,11 +27,9 @@
     if(req.body.text_input_home){
       req.session.homepageReport = req.body.text_input_home;
     }
-    if(req.session.user){
+   
     return res.redirect("/report")
-    }else{
-      return res.redirect("/login")
-    }
+    
   });
 
   router.route('/report')
@@ -54,10 +52,11 @@
       if(newReport.anonymous){
         anonymous = true;
       }
-    
+      
       try{
+        if (!req.session.user && anonymous == false) return res.redirect("/login")
         await reportData.create(req, anonymous, req.session.user, newReport.category, newReport.date, newReport.time, newReport.class, newReport.involved, newReport.text_input)
-        return res.redirect("/my-reports")
+        return res.render("success", {title: "Success"})
       }catch(e){
         res.status(400).json(e)
       }
